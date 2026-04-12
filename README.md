@@ -1,6 +1,6 @@
 # Smart Plant System
 
-Nowa wersja projektu została przepisana z Javy do Pythona i działa jako desktopowa aplikacja GUI w `tkinter`.
+Projekt działa jako desktopowa aplikacja GUI w `tkinter`.
 
 ## Funkcje
 
@@ -29,4 +29,4 @@ python app.py
 
 ## Repozytorium
 
-Projekt został zmigrowany z wersji Java do jednej aplikacji Python i oczyszczony ze starych katalogów po Javie.
+Repozytorium zawiera aplikację Python, stronę opisową projektu oraz logi pomiarów.

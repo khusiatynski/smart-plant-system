@@ -6,18 +6,19 @@
   <title>Smart Plant System</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --bg-soft: #111827;
-      --panel: rgba(255, 255, 255, 0.08);
-      --panel-strong: rgba(255, 255, 255, 0.12);
-      --text: #e5e7eb;
-      --muted: #cbd5e1;
-      --accent: #22c55e;
-      --accent-2: #38bdf8;
-      --border: rgba(255, 255, 255, 0.12);
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      --radius: 20px;
-      --maxw: 1150px;
+      --bg: #07111f;
+      --bg-soft: #0d1a2b;
+      --panel: rgba(19, 36, 59, 0.92);
+      --panel-2: rgba(24, 46, 74, 0.9);
+      --text: #ecf3ff;
+      --muted: #8fa8c6;
+      --accent: #58d68d;
+      --accent-2: #43c6db;
+      --accent-3: #bb6ef2;
+      --line: rgba(143, 168, 198, 0.18);
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      --radius: 24px;
+      --maxw: 1220px;
     }
 
     * {
@@ -30,13 +31,17 @@
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(34, 197, 94, 0.18), transparent 30%),
-        radial-gradient(circle at top right, rgba(56, 189, 248, 0.16), transparent 28%),
-        linear-gradient(180deg, #0b1220 0%, #111827 100%);
       color: var(--text);
-      line-height: 1.6;
+      font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(88, 214, 141, 0.16), transparent 28%),
+        radial-gradient(circle at 90% 10%, rgba(67, 198, 219, 0.16), transparent 24%),
+        linear-gradient(180deg, #06101b 0%, #0a1625 42%, #07111f 100%);
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
     }
 
     a {
@@ -49,95 +54,116 @@
       margin: 0 auto;
     }
 
-    .navbar {
+    .nav {
       position: sticky;
       top: 0;
       z-index: 50;
-      backdrop-filter: blur(12px);
-      background: rgba(15, 23, 42, 0.7);
-      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      background: rgba(7, 17, 31, 0.76);
+      border-bottom: 1px solid var(--line);
     }
 
     .nav-inner {
       width: min(92%, var(--maxw));
       margin: 0 auto;
+      padding: 16px 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 0;
-      gap: 18px;
+      gap: 20px;
     }
 
     .brand {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
     }
 
     .brand span {
       color: var(--accent);
     }
 
-    .nav-links {
+    .links {
       display: flex;
       flex-wrap: wrap;
       gap: 14px;
-      font-size: 14px;
       color: var(--muted);
+      font-size: 14px;
     }
 
-    .nav-links a:hover {
-      color: white;
+    .links a:hover {
+      color: var(--text);
     }
 
     .hero {
-      padding: 72px 0 48px;
+      padding: 72px 0 42px;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 28px;
-      align-items: center;
+      align-items: stretch;
+    }
+
+    .hero-copy,
+    .hero-card,
+    .card,
+    .shot-frame,
+    .timeline-item {
+      background: linear-gradient(180deg, rgba(18, 36, 59, 0.96), rgba(11, 25, 41, 0.96));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-copy {
+      padding: 32px;
     }
 
     .badge {
-      display: inline-block;
-      padding: 8px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
       border-radius: 999px;
-      background: rgba(34, 197, 94, 0.12);
-      color: #bbf7d0;
-      border: 1px solid rgba(34, 197, 94, 0.3);
       font-size: 13px;
-      margin-bottom: 18px;
+      color: #d8ffea;
+      background: rgba(88, 214, 141, 0.14);
+      border: 1px solid rgba(88, 214, 141, 0.28);
+      margin-bottom: 20px;
     }
 
     h1 {
       margin: 0 0 18px;
-      font-size: clamp(34px, 5vw, 56px);
-      line-height: 1.05;
+      font-size: clamp(38px, 5.6vw, 64px);
+      line-height: 0.98;
+      letter-spacing: -1.6px;
     }
 
-    .hero p {
+    .lead {
       color: var(--muted);
       font-size: 18px;
-      max-width: 720px;
-      margin-bottom: 28px;
+      line-height: 1.65;
+      margin: 0 0 26px;
+      max-width: 760px;
     }
 
-    .hero-actions {
+    .actions {
       display: flex;
-      gap: 14px;
       flex-wrap: wrap;
-      margin-bottom: 22px;
+      gap: 14px;
+      margin-bottom: 26px;
     }
 
     .btn {
-      display: inline-block;
-      padding: 13px 20px;
-      border-radius: 14px;
-      font-weight: 700;
-      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 20px;
+      border-radius: 16px;
+      font-weight: 800;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
     }
 
     .btn:hover {
@@ -145,36 +171,33 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #16a34a);
-      color: white;
-      box-shadow: var(--shadow);
+      color: #062515;
+      background: linear-gradient(135deg, var(--accent), #7ee7ad);
     }
 
     .btn-secondary {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid var(--border);
-      color: white;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
     }
 
-    .hero-stats {
+    .stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 14px;
     }
 
     .stat {
-      background: var(--panel);
-      border: 1px solid var(--border);
+      padding: 16px 18px;
       border-radius: 18px;
-      padding: 16px;
-      box-shadow: var(--shadow);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--line);
     }
 
     .stat strong {
       display: block;
-      font-size: 22px;
+      font-size: 28px;
       margin-bottom: 6px;
-      color: white;
     }
 
     .stat span {
@@ -183,11 +206,7 @@
     }
 
     .hero-card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
-      border: 1px solid var(--border);
-      border-radius: 26px;
-      padding: 24px;
-      box-shadow: var(--shadow);
+      padding: 28px;
       position: relative;
       overflow: hidden;
     }
@@ -197,217 +216,178 @@
       position: absolute;
       width: 220px;
       height: 220px;
-      background: radial-gradient(circle, rgba(34, 197, 94, 0.28), transparent 65%);
-      top: -80px;
       right: -60px;
+      top: -60px;
+      background: radial-gradient(circle, rgba(187, 110, 242, 0.28), transparent 68%);
       pointer-events: none;
     }
 
-    .mini-title {
+    .eyebrow {
+      color: #cbeeff;
       font-size: 13px;
       text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: #86efac;
+      letter-spacing: 1.3px;
       margin-bottom: 14px;
     }
 
     .flow {
       display: grid;
-      gap: 14px;
+      gap: 12px;
     }
 
     .flow-item {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px 16px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
     }
 
-    .flow-arrow {
+    .flow-item strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .arrow {
+      color: var(--accent);
       text-align: center;
-      color: #86efac;
-      font-size: 22px;
+      font-size: 24px;
       line-height: 1;
     }
 
     section {
-      padding: 26px 0;
+      padding: 24px 0;
     }
 
-    .section-title {
-      font-size: 30px;
+    .section-head {
+      margin-bottom: 22px;
+    }
+
+    .section-head h2 {
       margin: 0 0 10px;
+      font-size: 32px;
+      letter-spacing: -0.6px;
     }
 
-    .section-subtitle {
+    .section-head p {
+      margin: 0;
       color: var(--muted);
-      margin: 0 0 24px;
-      max-width: 760px;
+      max-width: 820px;
+      line-height: 1.7;
+    }
+
+    .grid-3,
+    .grid-2 {
+      display: grid;
+      gap: 18px;
     }
 
     .grid-3 {
-      display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
     }
 
     .grid-2 {
-      display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
     }
 
     .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px;
-      box-shadow: var(--shadow);
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      padding: 24px;
     }
 
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255,255,255,0.22);
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 23px;
+      margin-bottom: 14px;
+      background: rgba(88, 214, 141, 0.12);
+      border: 1px solid rgba(88, 214, 141, 0.22);
     }
 
     .card h3 {
-      margin-top: 0;
-      margin-bottom: 12px;
-      font-size: 20px;
+      margin: 0 0 10px;
+      font-size: 21px;
     }
 
-    .card p, .card li {
+    .card p,
+    .card li {
       color: var(--muted);
+      line-height: 1.7;
     }
 
-    .feature-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      background: rgba(34, 197, 94, 0.14);
-      font-size: 22px;
-      margin-bottom: 14px;
-    }
-
-    ul.clean {
-      padding-left: 18px;
+    .card ul {
       margin: 0;
+      padding-left: 18px;
     }
 
-    .stack-list {
+    .shot-frame {
+      padding: 20px;
+    }
+
+    .shot-frame img {
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+    }
+
+    .shot-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .stack {
       display: grid;
       gap: 12px;
     }
 
     .stack-item {
       padding: 14px 16px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
     }
 
     .timeline {
       display: grid;
       gap: 14px;
-      position: relative;
     }
 
     .timeline-item {
+      padding: 18px 20px;
       display: grid;
-      grid-template-columns: 140px 1fr;
+      grid-template-columns: 120px 1fr;
       gap: 16px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
+      align-items: start;
+    }
+
+    .timeline-step {
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    .callout {
+      padding: 22px 24px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(67, 198, 219, 0.12), rgba(88, 214, 141, 0.1));
+      border: 1px solid rgba(67, 198, 219, 0.2);
+      color: var(--text);
       box-shadow: var(--shadow);
     }
 
-    .timeline-time {
-      font-weight: 700;
-      color: #86efac;
-    }
-
-    .milestones {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .milestone {
-      padding: 12px 16px;
-      border-radius: 999px;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.26);
-      color: #bae6fd;
-      font-size: 14px;
-    }
-
-    .authors {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-    }
-
-    .author-role {
-      color: #86efac;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .repo-box {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-
-    .repo-link {
-      padding: 12px 16px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid var(--border);
-      word-break: break-all;
-      color: #bfdbfe;
-    }
-
-    .gallery-placeholder {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .placeholder {
-      min-height: 180px;
-      border-radius: 18px;
-      background:
-        linear-gradient(135deg, rgba(34,197,94,0.16), rgba(56,189,248,0.14)),
-        rgba(255,255,255,0.04);
-      border: 1px dashed rgba(255,255,255,0.2);
-      display: grid;
-      place-items: center;
-      text-align: center;
-      color: var(--muted);
-      padding: 16px;
-    }
-
     footer {
-      padding: 36px 0 44px;
-      color: #94a3b8;
+      padding: 40px 0 48px;
+      color: var(--muted);
       text-align: center;
       font-size: 14px;
     }
 
-    @media (max-width: 950px) {
+    @media (max-width: 1020px) {
       .hero-grid,
       .grid-3,
-      .grid-2,
-      .authors,
-      .gallery-placeholder {
+      .grid-2 {
         grid-template-columns: 1fr;
       }
 
@@ -415,74 +395,92 @@
         grid-template-columns: 1fr;
       }
 
-      .hero {
-        padding-top: 46px;
-      }
-
-      .hero-stats {
+      .stats {
         grid-template-columns: 1fr;
       }
+    }
 
+    @media (max-width: 760px) {
       .nav-inner {
-        align-items: flex-start;
         flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero {
+        padding-top: 42px;
+      }
+
+      .hero-copy,
+      .hero-card,
+      .card,
+      .shot-frame {
+        padding: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <nav class="navbar">
+  <nav class="nav">
     <div class="nav-inner">
       <div class="brand">Smart<span>Plant</span> System</div>
-      <div class="nav-links">
+      <div class="links">
         <a href="#opis">Opis</a>
+        <a href="#gui">GUI Python</a>
         <a href="#funkcje">Funkcje</a>
+        <a href="#architektura">Architektura</a>
         <a href="#technologie">Technologie</a>
-        <a href="#harmonogram">Harmonogram</a>
-        <a href="#autorzy">Autorzy</a>
-        <a href="#repo">Repozytorium</a>
+        <a href="#raport">Raport</a>
       </div>
     </div>
   </nav>
 
-  <header class="hero container">
-    <div class="hero-grid">
-      <div>
-        <div class="badge">Projekt zespołowy • Arduino Nano • Smart Plant Watering</div>
-        <h1>Inteligentny system podlewania i doświetlania roślin</h1>
-        <p>
-          Projekt przedstawia autonomiczny system monitorujący warunki środowiskowe roślin.
-          Na podstawie odczytów z czujników układ steruje pompą wodną oraz oświetleniem LED grow,
-          a wszystkie dane zapisuje do dalszej analizy.
+  <header class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="badge">Python GUI • Smart Plant Dashboard • CSV • UART-ready</div>
+        <h1>Inteligentny system monitorowania i sterowania uprawą roślin</h1>
+        <p class="lead">
+          Projekt łączy założenia mechatroniczne z raportu zespołowego z nową warstwą aplikacyjną.
+          Obecna wersja działa jako desktopowe GUI w Pythonie, prezentuje odczyty czujników w czasie
+          rzeczywistym, obsługuje tryb automatyczny i ręczny oraz loguje dane do pliku CSV.
         </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#repo">Zobacz repozytorium</a>
-          <a class="btn btn-secondary" href="#harmonogram">Zobacz harmonogram</a>
+        <div class="actions">
+          <a class="btn btn-primary" href="#gui">Zobacz interfejs</a>
+          <a class="btn btn-secondary" href="#technologie">Sprawdź technologię</a>
         </div>
-        <div class="hero-stats">
+        <div class="stats">
           <div class="stat">
-            <strong>4+</strong>
-            <span>Czujniki środowiskowe</span>
+            <strong>Python</strong>
+            <span>Nowa warstwa aplikacji desktopowej i GUI</span>
           </div>
           <div class="stat">
-            <strong>2</strong>
-            <span>Elementy wykonawcze</span>
+            <strong>5</strong>
+            <span>Symulowanych i monitorowanych parametrów środowiskowych</span>
           </div>
           <div class="stat">
-            <strong>CSV</strong>
-            <span>Logowanie wyników</span>
+            <strong>AUTO / RĘKA</strong>
+            <span>Dwa tryby pracy dla podlewania i doświetlania</span>
           </div>
         </div>
       </div>
 
       <div class="hero-card">
-        <div class="mini-title">Schemat koncepcyjny</div>
+        <div class="eyebrow">Aktualny kierunek projektu</div>
         <div class="flow">
-          <div class="flow-item"><strong>1. Pomiary</strong><br>Wilgotność gleby, temperatura, wilgotność powietrza, poziom światła, poziom wody</div>
-          <div class="flow-arrow">↓</div>
-          <div class="flow-item"><strong>2. Sterownik</strong><br>Arduino Nano analizuje dane oraz wykonuje algorytm histerezy</div>
-          <div class="flow-arrow">↓</div>
-          <div class="flow-item"><strong>3. Działanie</strong><br>Włączenie pompy lub lampy LED grow oraz zapis danych na kartę SD</div>
+          <div class="flow-item">
+            <strong>1. Część fizyczna z raportu</strong>
+            Arduino Nano, czujnik wilgotności gleby, BME280, pomiar światła, poziom wody, pompa DC i LED grow.
+          </div>
+          <div class="arrow">↓</div>
+          <div class="flow-item">
+            <strong>2. Logika sterowania</strong>
+            Progi wilgotności i światła, zabezpieczenie pompy przed suchobiegiem, zapis pomiarów i przygotowanie pod UART.
+          </div>
+          <div class="arrow">↓</div>
+          <div class="flow-item">
+            <strong>3. Nowe GUI w Pythonie</strong>
+            Dashboard z kartami, wykresami, ręcznym sterowaniem i czytelną diagnostyką stanu systemu.
+          </div>
         </div>
       </div>
     </div>
@@ -490,27 +488,48 @@
 
   <section id="opis">
     <div class="container">
-      <h2 class="section-title">Opis projektu</h2>
-      <p class="section-subtitle">
-        System został zaprojektowany jako prosty układ mechatroniczny integrujący pomiary fizyczne,
-        algorytmy sterowania, elementy wykonawcze i rejestrację danych. Jego zadaniem jest utrzymanie
-        możliwie stabilnych warunków wzrostu roślin przy ograniczeniu zużycia wody i energii.
-      </p>
-
+      <div class="section-head">
+        <h2>Opis projektu</h2>
+        <p>
+          W raporcie projektowym system został opisany jako układ do utrzymywania stabilnych warunków wzrostu
+          roślin przez pomiar parametrów środowiska i sterowanie elementami wykonawczymi. Aktualna wersja repozytorium
+          rozwija tę logikę jako nowoczesną aplikację desktopową w Pythonie.
+        </p>
+      </div>
       <div class="grid-2">
         <div class="card">
-          <h3>Cel główny</h3>
+          <div class="icon">🌿</div>
+          <h3>Cel układu</h3>
           <p>
-            Opracowanie autonomicznego systemu utrzymującego optymalną wilgotność gleby oraz odpowiedni
-            poziom oświetlenia roślin w warunkach domowych lub laboratoryjnych.
+            Utrzymanie odpowiedniej wilgotności gleby i poziomu oświetlenia roślin przy możliwie prostym,
+            czytelnym sterowaniu oraz rejestracji danych do dalszej analizy.
           </p>
         </div>
         <div class="card">
-          <h3>Założenie projektowe</h3>
+          <div class="icon">🖥️</div>
+          <h3>Zmiana warstwy programowej</h3>
           <p>
-            Zamiast prostego sterowania czasowego system reaguje na rzeczywiste parametry środowiska,
-            dzięki czemu działa bardziej racjonalnie i bliżej realnych rozwiązań automatyki.
+            Projekt korzysta z GUI w Pythonie. Dzięki temu interfejs jest prostszy
+            w rozwijaniu, bardziej spójny wizualnie i lepiej pokazuje stan pompy, LED, czujników i historii pomiarów.
           </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gui">
+    <div class="container">
+      <div class="section-head">
+        <h2>Nowe GUI w Pythonie</h2>
+        <p>
+          Poniżej znajduje się zrzut aktualnej aplikacji. Interfejs pokazuje metryki w kartach, wyraźny panel trybu pracy,
+          ręczne sterowanie pompą i LED oraz obszar diagnostyczny z informacją o logach i źródle danych.
+        </p>
+      </div>
+      <div class="shot-frame">
+        <img src="docs/gui-screenshot.png" alt="Zrzut ekranu aplikacji Smart Plant System w Pythonie" />
+        <div class="shot-note">
+          Widok aplikacji desktopowej: ciemny dashboard, wykresy, sterowanie ręczne i panel połączenia.
         </div>
       </div>
     </div>
@@ -518,76 +537,73 @@
 
   <section id="funkcje">
     <div class="container">
-      <h2 class="section-title">Funkcjonalności systemu</h2>
-      <p class="section-subtitle">
-        Projekt obejmuje pomiar, analizę, decyzję oraz sterowanie dwoma elementami wykonawczymi.
-      </p>
-
+      <div class="section-head">
+        <h2>Najważniejsze funkcje systemu</h2>
+        <p>
+          Funkcjonalność została oparta na logice opisanej w raporcie, ale dopracowana pod kątem wygodnej prezentacji w GUI.
+        </p>
+      </div>
       <div class="grid-3">
         <div class="card">
-          <div class="feature-icon">💧</div>
-          <h3>Pomiar wilgotności gleby</h3>
-          <p>Podstawowy parametr wykorzystywany do podejmowania decyzji o uruchomieniu pompy wodnej.</p>
+          <div class="icon">💧</div>
+          <h3>Wilgotność gleby</h3>
+          <p>System monitoruje kluczowy parametr odpowiadający za decyzję o uruchomieniu pompy.</p>
         </div>
-
         <div class="card">
-          <div class="feature-icon">🌡️</div>
-          <h3>Pomiar temperatury i wilgotności</h3>
-          <p>Umożliwia korektę działania systemu w zależności od warunków otoczenia.</p>
+          <div class="icon">🌡️</div>
+          <h3>Temperatura i wilgotność powietrza</h3>
+          <p>Dane środowiskowe pozwalają ocenić warunki pracy układu i obserwować wpływ działania LED oraz podlewania.</p>
         </div>
-
         <div class="card">
-          <div class="feature-icon">☀️</div>
-          <h3>Analiza światła</h3>
-          <p>Pomiar natężenia oświetlenia pozwala określić potrzebę włączenia lampy LED grow.</p>
+          <div class="icon">☀️</div>
+          <h3>Poziom światła</h3>
+          <p>Przy niskim natężeniu system może aktywować doświetlanie, zgodnie z zadanym progiem.</p>
         </div>
-
         <div class="card">
-          <div class="feature-icon">🚰</div>
+          <div class="icon">🚰</div>
           <h3>Kontrola poziomu wody</h3>
-          <p>Chroni pompę przed pracą na sucho i zwiększa bezpieczeństwo działania całego układu.</p>
+          <p>Zabezpieczenie pompy przed pracą na sucho pozostaje jednym z ważniejszych mechanizmów bezpieczeństwa.</p>
         </div>
-
         <div class="card">
-          <div class="feature-icon">⚙️</div>
-          <h3>Sterowanie pompą i LED</h3>
-          <p>Układ automatycznie steruje podlewaniem i doświetlaniem na podstawie przyjętych progów oraz histerezy.</p>
+          <div class="icon">🎛️</div>
+          <h3>Tryb AUTO i RĘKA</h3>
+          <p>Użytkownik może przełączać się między sterowaniem automatycznym a ręcznym dla pompy i oświetlenia LED.</p>
         </div>
-
         <div class="card">
-          <div class="feature-icon">📈</div>
-          <h3>Logowanie danych</h3>
-          <p>Parametry pracy systemu zapisywane są w plikach CSV, co umożliwia późniejszą analizę i tworzenie wykresów.</p>
+          <div class="icon">📈</div>
+          <h3>Logi i wykresy</h3>
+          <p>Każdy pomiar trafia do pliku CSV, a historia jest od razu pokazywana w postaci wykresów trendu.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="algorytm">
+  <section id="architektura">
     <div class="container">
-      <h2 class="section-title">Logika działania</h2>
-      <p class="section-subtitle">
-        Sterowanie zrealizowano metodą progową z histerezą, aby ograniczyć częste przełączanie pompy i oświetlenia.
-      </p>
-
+      <div class="section-head">
+        <h2>Architektura rozwiązania</h2>
+        <p>
+          Rdzeń projektu nadal odpowiada temu, co wynika z raportu: część sensoryczna i wykonawcza, logika decyzyjna oraz warstwa prezentacji.
+          Zmianie uległa głównie aplikacja operatorska, która została zbudowana od nowa w Pythonie.
+        </p>
+      </div>
       <div class="grid-2">
         <div class="card">
-          <h3>Podlewanie</h3>
-          <ul class="clean">
-            <li>Pompa włącza się poniżej dolnego progu wilgotności.</li>
-            <li>Pompa wyłącza się po osiągnięciu progu górnego.</li>
-            <li>Brak wody w zbiorniku blokuje uruchomienie pompy.</li>
-            <li>W nocy możliwe jest ograniczenie podlewania.</li>
+          <h3>Warstwa sterowania</h3>
+          <ul>
+            <li>odczyt danych z połączenia demo lub warstwy UART,</li>
+            <li>progi minimalnej wilgotności gleby i światła,</li>
+            <li>automatyczne załączanie pompy oraz LED,</li>
+            <li>blokada pompy przy niskim poziomie wody.</li>
           </ul>
         </div>
-
         <div class="card">
-          <h3>Doświetlanie</h3>
-          <ul class="clean">
-            <li>Lampa LED grow włącza się przy niskim poziomie światła.</li>
-            <li>Po przekroczeniu górnego progu oświetlenie wyłącza się.</li>
-            <li>Histereza ogranicza migotanie przy małych zmianach jasności.</li>
-            <li>Praca lampy odbywa się niezależnie od układu podlewania.</li>
+          <h3>Warstwa prezentacji</h3>
+          <ul>
+            <li>dashboard z kartami statusu i kolorowymi paskami,</li>
+            <li>wykres wilgotności gleby i wykres światła,</li>
+            <li>sekcja połączenia COM i wybór prędkości UART,</li>
+            <li>panel ręcznego sterowania widoczny od razu po uruchomieniu.</li>
           </ul>
         </div>
       </div>
@@ -596,148 +612,76 @@
 
   <section id="technologie">
     <div class="container">
-      <h2 class="section-title">Zastosowane technologie</h2>
-      <p class="section-subtitle">
-        Podzespoły zostały dobrane z uwzględnieniem zgodności napięciowej, łatwości integracji i poziomu trudności projektu.
-      </p>
-
+      <div class="section-head">
+        <h2>Technologie i podzespoły</h2>
+        <p>
+          Sekcja łączy aktualny stan repozytorium z założeniami sprzętowymi wymienionymi w raporcie zespołowym.
+        </p>
+      </div>
       <div class="grid-2">
         <div class="card">
-          <h3>Sprzęt</h3>
-          <div class="stack-list">
-            <div class="stack-item"><strong>Arduino Nano</strong><br>Mikrokontroler sterujący całym układem</div>
-            <div class="stack-item"><strong>Czujnik wilgotności gleby</strong><br>Pomiar podstawowego parametru podlewania</div>
-            <div class="stack-item"><strong>BME280</strong><br>Temperatura i wilgotność powietrza</div>
-            <div class="stack-item"><strong>LM393 + fotorezystor</strong><br>Pomiar poziomu oświetlenia</div>
-            <div class="stack-item"><strong>Analogowy czujnik poziomu wody</strong><br>Zabezpieczenie pracy pompy</div>
-            <div class="stack-item"><strong>Pompa DC + LED grow + 2× MOSFET</strong><br>Elementy wykonawcze systemu</div>
-            <div class="stack-item"><strong>Moduł karty SD</strong><br>Zapisywanie danych pomiarowych</div>
+          <h3>Sprzęt z raportu</h3>
+          <div class="stack">
+            <div class="stack-item"><strong>Arduino Nano</strong><br />Jednostka sterująca przewidziana w części mechatronicznej projektu.</div>
+            <div class="stack-item"><strong>BME280</strong><br />Pomiar temperatury i wilgotności powietrza.</div>
+            <div class="stack-item"><strong>Czujnik wilgotności gleby</strong><br />Podstawowy sygnał dla automatycznego podlewania.</div>
+            <div class="stack-item"><strong>LM393 + fotorezystor</strong><br />Ocena poziomu oświetlenia i decyzja o doświetlaniu.</div>
+            <div class="stack-item"><strong>Czujnik poziomu wody</strong><br />Zabezpieczenie pompy przed suchobiegiem.</div>
+            <div class="stack-item"><strong>Pompa DC i LED grow</strong><br />Elementy wykonawcze sterowane przez logikę systemu.</div>
           </div>
         </div>
-
         <div class="card">
-          <h3>Oprogramowanie</h3>
-          <div class="stack-list">
-            <div class="stack-item"><strong>Arduino IDE</strong><br>Środowisko programistyczne wykorzystywane w projekcie</div>
-            <div class="stack-item"><strong>UART</strong><br>Komunikacja diagnostyczna i testowa</div>
-            <div class="stack-item"><strong>CSV</strong><br>Format zapisu danych do dalszej analizy</div>
-            <div class="stack-item"><strong>Wokwi</strong><br>Symulacja schematu i logiki działania systemu</div>
+          <h3>Warstwa programowa</h3>
+          <div class="stack">
+            <div class="stack-item"><strong>Python</strong><br />Główny język obecnej wersji aplikacji.</div>
+            <div class="stack-item"><strong>tkinter</strong><br />Desktopowe GUI z kartami, wskaźnikami i sterowaniem.</div>
+            <div class="stack-item"><strong>CSV</strong><br />Logowanie danych pomiarowych do analizy.</div>
+            <div class="stack-item"><strong>UART-ready</strong><br />Warstwa komunikacyjna przygotowana do pracy z portem COM.</div>
+            <div class="stack-item"><strong>Symulacja danych</strong><br />Tryb demo pozwala prezentować zachowanie systemu bez podłączonego sprzętu.</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="harmonogram">
+  <section id="raport">
     <div class="container">
-      <h2 class="section-title">Harmonogram i kamienie milowe</h2>
-      <p class="section-subtitle">
-        Realizacja projektu została rozbita na etapy, które pozwalają kontrolować postęp prac i integrację systemu.
-      </p>
-
+      <div class="section-head">
+        <h2>Odniesienie do raportu zespołowego</h2>
+        <p>
+          Aktualizacja strony została oparta częściowo na dokumencie <strong>Projekt Zespołowy Raport 1.pdf</strong>,
+          zwłaszcza w zakresie celu systemu, listy czujników, pompy DC, LED grow, komunikacji UART i logowania danych.
+          Sama warstwa GUI została jednak zaktualizowana do nowej implementacji w Pythonie.
+        </p>
+      </div>
       <div class="timeline">
         <div class="timeline-item">
-          <div class="timeline-time">Etap 1</div>
-          <div><strong>Analiza projektu i dobór komponentów</strong><br>Opracowanie koncepcji, wybór czujników i elementów wykonawczych oraz wstępna analiza kompatybilności.</div>
+          <div class="timeline-step">Etap 1</div>
+          <div><strong>Założenia systemu</strong><br />Monitorowanie środowiska roślin i sterowanie elementami wykonawczymi zgodnie z odczytami.</div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-time">Etap 2</div>
-          <div><strong>Budowa części sprzętowej</strong><br>Montaż układu, przygotowanie zasilania, podłączenie czujników, pompy oraz lampy LED grow.</div>
+          <div class="timeline-step">Etap 2</div>
+          <div><strong>Warstwa fizyczna</strong><br />Dobór układu z Arduino Nano, czujnikami, pompą, LED i elementami pomocniczymi.</div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-time">Etap 3</div>
-          <div><strong>Programowanie logiki sterowania</strong><br>Implementacja odczytów, algorytmu histerezy i podstawowej logiki bezpieczeństwa.</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-time">Etap 4</div>
-          <div><strong>Integracja i logowanie danych</strong><br>Uruchomienie zapisu CSV, testy współpracy wszystkich modułów i kalibracja progów.</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-time">Etap 5</div>
-          <div><strong>Testy końcowe i dokumentacja</strong><br>Weryfikacja działania, opracowanie raportu oraz publikacja materiałów projektu.</div>
-        </div>
-      </div>
-
-      <div style="margin-top: 20px;">
-        <div class="milestones">
-          <div class="milestone">M1: Odczyt czujników</div>
-          <div class="milestone">M2: Sterowanie pompą</div>
-          <div class="milestone">M3: Sterowanie LED</div>
-          <div class="milestone">M4: Logowanie CSV</div>
-          <div class="milestone">M5: Integracja całości</div>
-          <div class="milestone">M6: Finalny pokaz działania</div>
+          <div class="timeline-step">Etap 3</div>
+          <div><strong>Nowa aplikacja operatorska</strong><br />Python GUI z uproszczoną obsługą, czytelnym dashboardem i panelem sterowania dla użytkownika.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="autorzy">
+  <section>
     <div class="container">
-      <h2 class="section-title">Zespół projektowy</h2>
-      <p class="section-subtitle">
-        Zakres prac został podzielony zgodnie z charakterem projektu na część sprzętową i programową.
-      </p>
-
-      <div class="authors">
-        <div class="card">
-          <div class="author-role">Student A — programowanie</div>
-          <ul class="clean">
-            <li>opracowanie algorytmu sterowania,</li>
-            <li>implementacja programu Arduino Nano,</li>
-            <li>obsługa czujników i logowania danych,</li>
-            <li>testy programowe oraz integracja logiczna systemu.</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <div class="author-role">Student B — montaż i hardware</div>
-          <ul class="clean">
-            <li>dobór i przygotowanie elementów,</li>
-            <li>lutowanie i montaż układu,</li>
-            <li>podłączenie zasilania oraz elementów wykonawczych,</li>
-            <li>wsparcie podczas testów integracyjnych.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="galeria">
-    <div class="container">
-      <h2 class="section-title">Materiały projektu</h2>
-      <p class="section-subtitle">
-        W tej sekcji można później umieścić zdjęcia układu, zrzuty z Wokwi, schematy i wykresy z zebranych danych.
-      </p>
-
-      <div class="gallery-placeholder">
-        <div class="placeholder">Tutaj wstaw zdjęcie gotowego układu</div>
-        <div class="placeholder">Tutaj wstaw schemat z Wokwi</div>
-        <div class="placeholder">Tutaj wstaw wykres danych CSV</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="repo">
-    <div class="container">
-      <h2 class="section-title">Repozytorium projektu</h2>
-      <p class="section-subtitle">
-        Kod źródłowy, dokumentacja oraz pliki pomocnicze będą przechowywane w repozytorium GitHub.
-      </p>
-
-      <div class="card repo-box">
-        <div>
-          <h3 style="margin-top: 0;">Link do repozytorium</h3>
-          <div class="repo-link">https://github.com/twoj-login/smart-plant-system</div>
-        </div>
-        <a class="btn btn-primary" href="https://github.com/twoj-login/smart-plant-system" target="_blank" rel="noopener noreferrer">
-          Otwórz GitHub
-        </a>
+      <div class="callout">
+        Repozytorium pokazuje teraz dwa poziomy projektu jednocześnie: sprzętowe założenia z raportu oraz działającą aplikację desktopową w Pythonie,
+        która może służyć jako demonstrator, panel operatorski i punkt wyjścia do integracji z prawdziwym Arduino.
       </div>
     </div>
   </section>
 
   <footer>
-    Smart Plant System • Projekt zespołowy • Arduino Nano
+    Smart Plant System • wersja Python GUI • dashboard monitorowania roślin
   </footer>
 </body>
 </html>
