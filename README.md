@@ -21,11 +21,21 @@ Wymagany jest Python 3.
 python app.py
 ```
 
-## Pliki
+## Struktura
 
-- `app.py` - główna aplikacja
+- `app.py` - launcher aplikacji z katalogu głównego
+- `GUI/` - właściwy kod desktopowego GUI
+- `Arduino/Wokwi/` - kod i pliki do symulacji w Wokwi
+- `Arduino/Real/` - kod dla prawdziwego Arduino
+- `schemat/` - miejsce na schematy połączeń i dokumentację montażu
 - `logs/plant-log.csv` - log pomiarów
 - `index.html` - strona opisowa projektu
+
+## Wokwi
+
+Publiczny projekt Wokwi:
+
+`https://wokwi.com/projects/461119979508150273`
 
 ## Repozytorium
 

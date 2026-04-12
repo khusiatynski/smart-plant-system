@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "author": "Konrad Husiatyński",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-nano", "id": "nano", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-photoresistor-sensor",
+      "id": "ldr1",
+      "top": 176,
+      "left": -181.6,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text1",
+      "top": 566.4,
+      "left": 134.4,
+      "attrs": { "text": "Poziom wody w zbiorniku" }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot1",
+      "top": 446.6,
+      "left": 85.4,
+      "attrs": { "travelLength": "30" }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot2",
+      "top": 581,
+      "left": 85.4,
+      "attrs": { "travelLength": "30", "text": "Wilgotność gleby" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": -157.2,
+      "left": 80.6,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led2",
+      "top": -157.2,
+      "left": 42.2,
+      "attrs": { "color": "cyan" }
+    },
+    { "type": "wokwi-vcc", "id": "vcc1", "top": 432.76, "left": 76.8, "attrs": {} },
+    { "type": "wokwi-vcc", "id": "vcc2", "top": 576.76, "left": 76.8, "attrs": {} },
+    { "type": "wokwi-gnd", "id": "gnd1", "top": 499.2, "left": 287.4, "attrs": {} },
+    { "type": "wokwi-gnd", "id": "gnd2", "top": 643.2, "left": 287.4, "attrs": {} },
+    { "type": "wokwi-gnd", "id": "gnd3", "top": 240, "left": -0.6, "attrs": {} },
+    { "type": "wokwi-vcc", "id": "vcc3", "top": 154.36, "left": -19.2, "attrs": {} },
+    { "type": "chip-bme280", "id": "chip1", "top": 97.02, "left": -139.2, "attrs": {} },
+    { "type": "wokwi-vcc", "id": "vcc4", "top": 58.36, "left": -182.4, "attrs": {} },
+    { "type": "wokwi-gnd", "id": "gnd4", "top": 124.8, "left": -202.2, "attrs": {} },
+    {
+      "type": "wokwi-text",
+      "id": "text2",
+      "top": 432,
+      "left": 124.8,
+      "attrs": { "text": "Wilgotność gleby" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text3",
+      "top": 144,
+      "left": -172.8,
+      "attrs": { "text": "Poziom naświetlenia" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text4",
+      "top": -172.8,
+      "left": 124.8,
+      "attrs": { "text": "Pompa" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text5",
+      "top": -182.4,
+      "left": -19.2,
+      "attrs": { "text": "LED growth" }
+    }
+  ],
+  "connections": [
+    [ "ldr1:AO", "nano:A2", "green", [ "h0" ] ],
+    [ "pot1:SIG", "nano:A0", "green", [ "h0" ] ],
+    [ "pot2:SIG", "nano:A1", "green", [ "h0" ] ],
+    [ "led1:A", "nano:3", "green", [ "v0" ] ],
+    [ "led1:C", "nano:GND.2", "green", [ "v19.2", "h19.6" ] ],
+    [ "led2:A", "nano:5", "green", [ "h19.2", "v76.8", "h0.5" ] ],
+    [ "led2:C", "nano:GND.2", "green", [ "v86.4", "h67.6" ] ],
+    [ "vcc1:VCC", "pot1:VCC", "red", [ "v0" ] ],
+    [ "vcc2:VCC", "pot2:VCC", "red", [ "v0" ] ],
+    [ "gnd1:GND", "pot1:GND", "black", [ "v-9.6" ] ],
+    [ "gnd2:GND", "pot2:GND", "black", [ "v0" ] ],
+    [ "ldr1:GND", "gnd3:GND", "black", [ "h0" ] ],
+    [ "vcc3:VCC", "ldr1:VCC", "red", [ "v0" ] ],
+    [ "vcc4:VCC", "chip1:VCC", "red", [ "v19.2" ] ],
+    [ "gnd4:GND", "chip1:GND", "black", [ "v0" ] ],
+    [ "chip1:SDA", "nano:A4", "green", [ "h0" ] ],
+    [ "chip1:SCL", "nano:A5", "green", [ "v0", "h126.61" ] ]
+  ],
+  "dependencies": {}
+}

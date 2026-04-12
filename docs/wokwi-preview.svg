@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" fill="none">
+  <rect width="1200" height="720" rx="36" fill="#08111f"/>
+  <rect x="42" y="42" width="1116" height="636" rx="28" fill="#12243b" stroke="#21405f" stroke-width="2"/>
+  <rect x="82" y="86" width="270" height="520" rx="24" fill="#1b3554"/>
+  <text x="116" y="138" fill="#ecf3ff" font-size="34" font-family="Segoe UI, sans-serif" font-weight="700">Arduino Nano</text>
+  <g fill="#0d1a2b">
+    <rect x="116" y="178" width="200" height="18" rx="6"/>
+    <rect x="116" y="212" width="200" height="18" rx="6"/>
+    <rect x="116" y="246" width="200" height="18" rx="6"/>
+    <rect x="116" y="280" width="200" height="18" rx="6"/>
+    <rect x="116" y="314" width="200" height="18" rx="6"/>
+    <rect x="116" y="348" width="200" height="18" rx="6"/>
+    <rect x="116" y="382" width="200" height="18" rx="6"/>
+    <rect x="116" y="416" width="200" height="18" rx="6"/>
+    <rect x="116" y="450" width="200" height="18" rx="6"/>
+    <rect x="116" y="484" width="200" height="18" rx="6"/>
+  </g>
+  <rect x="468" y="90" width="252" height="132" rx="24" fill="#1b3554"/>
+  <text x="525" y="146" fill="#ecf3ff" font-size="28" font-family="Segoe UI, sans-serif" font-weight="700">BME280</text>
+  <text x="518" y="186" fill="#8fa8c6" font-size="18" font-family="Segoe UI, sans-serif">I2C • SDA A4 • SCL A5</text>
+  <rect x="468" y="272" width="252" height="112" rx="24" fill="#1b3554"/>
+  <text x="496" y="336" fill="#ecf3ff" font-size="26" font-family="Segoe UI, sans-serif" font-weight="700">Czujnik gleby</text>
+  <rect x="468" y="432" width="252" height="112" rx="24" fill="#1b3554"/>
+  <text x="486" y="496" fill="#ecf3ff" font-size="26" font-family="Segoe UI, sans-serif" font-weight="700">Czujnik wody</text>
+  <rect x="800" y="146" width="268" height="112" rx="24" fill="#1b3554"/>
+  <text x="842" y="212" fill="#ecf3ff" font-size="26" font-family="Segoe UI, sans-serif" font-weight="700">LDR / światło</text>
+  <rect x="800" y="332" width="268" height="112" rx="24" fill="#1b3554"/>
+  <text x="858" y="396" fill="#ecf3ff" font-size="26" font-family="Segoe UI, sans-serif" font-weight="700">LED grow</text>
+  <rect x="800" y="496" width="268" height="112" rx="24" fill="#1b3554"/>
+  <text x="839" y="560" fill="#ecf3ff" font-size="26" font-family="Segoe UI, sans-serif" font-weight="700">Przekaźnik pompy</text>
+  <g stroke-width="8" stroke-linecap="round">
+    <path d="M352 154H468" stroke="#58d68d"/>
+    <path d="M352 334H468" stroke="#43c6db"/>
+    <path d="M352 490H468" stroke="#bb6ef2"/>
+    <path d="M720 154H800" stroke="#43c6db"/>
+    <path d="M720 328H800" stroke="#58d68d"/>
+    <path d="M720 492H800" stroke="#ffb02e"/>
+  </g>
+  <circle cx="389" cy="154" r="8" fill="#58d68d"/>
+  <circle cx="389" cy="334" r="8" fill="#43c6db"/>
+  <circle cx="389" cy="490" r="8" fill="#bb6ef2"/>
+  <circle cx="760" cy="154" r="8" fill="#43c6db"/>
+  <circle cx="760" cy="328" r="8" fill="#58d68d"/>
+  <circle cx="760" cy="492" r="8" fill="#ffb02e"/>
+  <text x="86" y="656" fill="#8fa8c6" font-size="22" font-family="Segoe UI, sans-serif">
+    Podgląd układu do symulacji Wokwi przygotowany na podstawie katalogu Arduino/Wokwi
+  </text>
+</svg>
