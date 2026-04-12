@@ -8,6 +8,11 @@ from datetime import datetime
 from pathlib import Path
 from tkinter import messagebox, ttk
 
+try:
+    import serial  # type: ignore
+except ImportError:
+    serial = None
+
 
 BG = "#08111f"
 BG_ALT = "#0d1a2b"
@@ -147,13 +152,141 @@ class UartDeviceConnection(DeviceConnection):
     def __init__(self, port_name: str, baud_rate: int, system_status: SystemStatus) -> None:
         self.port_name = port_name
         self.baud_rate = baud_rate
+        self.system_status = system_status
         self.fallback = MockDeviceConnection(system_status)
+        self.serial_port = None
+        self.last_error = ""
+        self.last_data: PlantData | None = None
+
+        if serial is None:
+            self.last_error = "Brak biblioteki pyserial. UART jest niedostepny."
+            return
+
+        try:
+            self.serial_port = serial.Serial(port_name, baud_rate, timeout=2)
+            self.send_time()
+        except Exception as exc:
+            self.last_error = f"Nie mozna otworzyc portu {port_name}: {exc}"
+            self.serial_port = None
 
     def read_plant_data(self) -> PlantData:
-        return self.fallback.read_plant_data()
+        if not self.serial_port or not self.serial_port.is_open:
+            if self.last_data is not None:
+                return self.last_data
+            self.last_data = self.fallback.read_plant_data()
+            return self.last_data
+
+        deadline = datetime.now().timestamp() + 2.2
+        while datetime.now().timestamp() < deadline:
+            try:
+                raw = self.serial_port.readline()
+                if not raw:
+                    break
+                line = raw.decode("utf-8", errors="ignore").strip()
+                if not line:
+                    continue
+                if self._handle_status_line(line):
+                    continue
+                data = self._parse_data_line(line)
+                if data is None:
+                    continue
+                self.last_data = data
+                return data
+            except Exception as exc:
+                self.last_error = f"Blad odczytu UART: {exc}"
+                break
+
+        if self.last_data is not None:
+            return self.last_data
+        self.last_data = self.fallback.read_plant_data()
+        return self.last_data
 
     def get_source_name(self) -> str:
-        return "UART"
+        return "UART" if self.serial_port and self.serial_port.is_open else "UART-OFFLINE"
+
+    def send_command(self, command: str) -> bool:
+        if not self.serial_port or not self.serial_port.is_open:
+            self.last_error = "Port UART nie jest otwarty."
+            return False
+
+        try:
+            self.serial_port.write(f"{command}\n".encode("utf-8"))
+            self.serial_port.flush()
+            response = self.serial_port.readline().decode("utf-8", errors="ignore").strip()
+            if response:
+                if response.startswith("ERROR:"):
+                    self.last_error = self._translate_device_error(response)
+                    return False
+                if response.startswith("OK:"):
+                    self.last_error = ""
+                    return True
+                self._handle_status_line(response)
+            self.last_error = ""
+            return True
+        except Exception as exc:
+            self.last_error = f"Blad wysylania UART: {exc}"
+            return False
+
+    def send_time(self) -> None:
+        now = datetime.now()
+        self.send_command(now.strftime("SET_TIME:%Y-%m-%d %H:%M:%S"))
+
+    def send_thresholds(self, soil_min: float, soil_max: float, light_min: float, light_max: float) -> bool:
+        return self.send_command(f"SET_THRESHOLDS:{soil_min:.1f},{soil_max:.1f},{light_min:.1f},{light_max:.1f}")
+
+    def set_auto_mode(self) -> bool:
+        return self.send_command("AUTO")
+
+    def set_manual_mode(self) -> bool:
+        return self.send_command("MANUAL")
+
+    def set_pump(self, enabled: bool) -> bool:
+        return self.send_command("PUMP:ON" if enabled else "PUMP:OFF")
+
+    def set_led(self, enabled: bool) -> bool:
+        return self.send_command("LED:ON" if enabled else "LED:OFF")
+
+    def consume_last_error(self) -> str:
+        message = self.last_error
+        self.last_error = ""
+        return message
+
+    def _handle_status_line(self, line: str) -> bool:
+        if line == "Smart Plant System Ready":
+            return True
+        if line.startswith("OK:"):
+            self.last_error = ""
+            return True
+        if line.startswith("ERROR:"):
+            self.last_error = self._translate_device_error(line)
+            return True
+        return False
+
+    def _parse_data_line(self, line: str) -> PlantData | None:
+        parts = line.split(",")
+        if len(parts) != 9:
+            return None
+        try:
+            data = PlantData(
+                timestamp=datetime.strptime(parts[0], "%Y-%m-%d %H:%M:%S"),
+                soil_moisture=float(parts[1]),
+                temperature=float(parts[2]),
+                air_humidity=float(parts[3]),
+                pressure=float(parts[4]),
+                light_level=float(parts[5]),
+                water_level=float(parts[6]),
+            )
+            self.system_status.pump_on = parts[7].strip().lower() == "true"
+            self.system_status.led_on = parts[8].strip().lower() == "true"
+            self.last_error = ""
+            return data
+        except ValueError:
+            return None
+
+    def _translate_device_error(self, response: str) -> str:
+        if response == "ERROR:LOW_WATER":
+            return "Arduino odrzucilo komende. Zbyt niski poziom wody."
+        return response.replace("ERROR:", "Blad Arduino: ")
 
 
 class DataLogger:
@@ -223,6 +356,7 @@ class PlantControllerService:
 
     def refresh_data(self) -> PlantData:
         self.current_data = self.device_connection.read_plant_data()
+        self._pull_uart_error()
         self._ensure_pump_safety(self.current_data)
         if self.automatic_control_enabled:
             self._apply_automation(self.current_data)
@@ -261,12 +395,18 @@ class PlantControllerService:
             self.last_error_message = "Pompa nie moze zostac wlaczona. Zbiornik wody jest pusty."
             return
         self.system_status.pump_on = enabled
+        if isinstance(self.device_connection, UartDeviceConnection):
+            if not self.device_connection.set_pump(enabled):
+                self._pull_uart_error()
         if not enabled:
             self.last_error_message = ""
 
     def set_led_manual(self, enabled: bool) -> None:
         self.set_automatic_control_enabled(False)
         self.system_status.led_on = enabled
+        if isinstance(self.device_connection, UartDeviceConnection):
+            if not self.device_connection.set_led(enabled):
+                self._pull_uart_error()
 
     def update_thresholds(
         self,
@@ -279,6 +419,9 @@ class PlantControllerService:
         self.threshold_config.max_soil_moisture = max_soil_moisture
         self.threshold_config.min_light_level = min_light_level
         self.threshold_config.max_light_level = max_light_level
+        if isinstance(self.device_connection, UartDeviceConnection):
+            if not self.device_connection.send_thresholds(min_soil_moisture, max_soil_moisture, min_light_level, max_light_level):
+                self._pull_uart_error()
         self.automatic_control_enabled = True
         if self.current_data:
             self._apply_automation(self.current_data)
@@ -290,12 +433,20 @@ class PlantControllerService:
         self.last_error_message = ""
 
     def connect_to_uart(self, port_name: str, baud_rate: int) -> None:
-        self.device_connection = UartDeviceConnection(port_name, baud_rate, self.system_status)
+        connection = UartDeviceConnection(port_name, baud_rate, self.system_status)
+        self.device_connection = connection
         self.active_connection_label = f"UART: {port_name} @ {baud_rate}"
-        self.last_error_message = "Warstwa UART jest przygotowana, odczyt danych pozostaje symulowany."
+        if connection.serial_port and connection.serial_port.is_open:
+            self.last_error_message = ""
+        else:
+            self.last_error_message = connection.consume_last_error() or "Nie udalo sie nawiazac polaczenia UART."
 
     def set_automatic_control_enabled(self, enabled: bool) -> None:
         self.automatic_control_enabled = enabled
+        if isinstance(self.device_connection, UartDeviceConnection):
+            ok = self.device_connection.set_auto_mode() if enabled else self.device_connection.set_manual_mode()
+            if not ok:
+                self._pull_uart_error()
         if enabled and self.current_data:
             self._apply_automation(self.current_data)
             self._ensure_pump_safety(self.current_data)
@@ -322,6 +473,12 @@ class PlantControllerService:
     @property
     def active_source_name(self) -> str:
         return self.device_connection.get_source_name()
+
+    def _pull_uart_error(self) -> None:
+        if isinstance(self.device_connection, UartDeviceConnection):
+            message = self.device_connection.consume_last_error()
+            if message:
+                self.last_error_message = message
 
 
 class Card(ttk.Frame):

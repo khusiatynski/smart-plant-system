@@ -11,4 +11,11 @@ Zakładane podłączenia:
 - `D6` - sterowanie LED grow
 - `D7` - sterowanie przekaźnikiem pompy
 
-Przed uruchomieniem na prawdziwym układzie skalibruj zakresy analogowe w pliku `smart_plant_real.ino`.
+Pliki:
+
+- `smart_plant_real.ino` - bazowa wersja dla rzeczywistego układu
+- `smart_plant_gui_sync.ino` - wersja zsynchronizowana z GUI przez UART
+
+Do testów z aplikacją desktopową użyj `smart_plant_gui_sync.ino`.
+
+Przed uruchomieniem na prawdziwym układzie skalibruj zakresy analogowe i sprawdź przypisanie pinów.
