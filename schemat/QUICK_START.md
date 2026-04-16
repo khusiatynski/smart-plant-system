@@ -1,26 +1,4 @@
 # Smart Plant - Quick Start Guide
-**Dla zakupionego sprzętu z Allegro**
-
----
-
-## 🚀 Montaż w 15 minut
-
-### **Co masz:**
-✅ Arduino Nano (CH340, USB-C)  
-✅ Moduł PWM 2x MOSFET 400W  
-✅ BME280 (temp + wilgotność + ciśnienie)  
-✅ Czujnik gleby M335  
-✅ Czujnik poziomu wody  
-✅ LM393 czujnik światła  
-✅ Pompa DC JT-DC3W (3-5V)  
-✅ LED 3W Epistar Full Spectrum  
-
-### **Co musisz dokupić:**
-❌ **Rezystor 2.2Ω 5W** (KRYTYCZNY - bez niego LED przepali się!)  
-❌ Zasilacz 5V 2A  
-❌ Kable dupont (10 szt.)  
-❌ Radiator do LED (opcja ale zalecane)
-
 ---
 
 ## 📐 Schemat Połączeń
