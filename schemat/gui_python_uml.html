@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Plant - GUI Python UML Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #1a237e;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .mermaid {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .info {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #4caf50;
+            margin: 20px 0;
+        }
+        .info h3 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+        .pattern {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ff9800;
+            margin: 20px 0;
+        }
+        .pattern h3 {
+            margin-top: 0;
+            color: #e65100;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#e8f5e9',
+                primaryTextColor: '#1a237e',
+                primaryBorderColor: '#4caf50',
+                lineColor: '#2e7d32',
+                secondaryColor: '#e3f2fd',
+                tertiaryColor: '#fff3e0'
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>🐍 Smart Plant System - GUI Python (tkinter)</h1>
+        <div class="subtitle">Diagram Klas UML - Architektura Obiektowa</div>
+        
+        <div class="info">
+            <h3>📋 Opis architektury</h3>
+            <p><strong>Język:</strong> Python 3.x</p>
+            <p><strong>Framework GUI:</strong> tkinter (ciemny motyw #08111f)</p>
+            <p><strong>Wzorce projektowe:</strong> Strategy Pattern (DeviceConnection), MVC, Observer</p>
+            <p><strong>Główne warstwy:</strong></p>
+            <ul>
+                <li><strong>Model Danych:</strong> PlantData, SystemStatus, ThresholdConfig</li>
+                <li><strong>Logika Biznesowa:</strong> PlantControllerService (centralny serwis)</li>
+                <li><strong>Komunikacja:</strong> DeviceConnection (interfejs), MockDeviceConnection (demo), UartDeviceConnection (hardware)</li>
+                <li><strong>Warstwa UI:</strong> PlantApp (główne okno), karty widoków (MetricCard, GaugeCard, TrendChart)</li>
+                <li><strong>Persystencja:</strong> DataLogger (zapis CSV)</li>
+            </ul>
+        </div>
+
+        <div class="mermaid">
+classDiagram
+    class PlantData {
+        +timestamp datetime
+        +soil_moisture float
+        +temperature float
+        +air_humidity float
+        +pressure float
+        +light_level float
+        +water_level float
+        +to_csv_row() list
+    }
+    
+    class SystemStatus {
+        +pump_on bool
+        +led_on bool
+    }
+    
+    class ThresholdConfig {
+        +min_soil_moisture float
+        +max_soil_moisture float
+        +min_light_level float
+        +max_light_level float
+    }
+    
+    class DeviceConnection {
+        &lt;&lt;interface&gt;&gt;
+        +read_plant_data() PlantData
+        +get_source_name() str
+    }
+    
+    class MockDeviceConnection {
+        -soil_moisture float
+        -temperature float
+        -water_level float
+        +read_plant_data() PlantData
+        +get_source_name() str
+        +refill_water_tank()
+    }
+    
+    class UartDeviceConnection {
+        -port_name str
+        -baud_rate int
+        -serial_port Serial
+        +read_plant_data() PlantData
+        +send_command(cmd) bool
+        +send_time()
+        +set_auto_mode() bool
+        +set_pump(enabled) bool
+        +set_led(enabled) bool
+    }
+    
+    class DataLogger {
+        -log_path Path
+        +initialize()
+        +log(data, status)
+    }
+    
+    class PlantControllerService {
+        -device_connection DeviceConnection
+        -system_status SystemStatus
+        -threshold_config ThresholdConfig
+        -data_logger DataLogger
+        -history list
+        +refresh_data() PlantData
+        +set_pump_manual(enabled)
+        +set_led_manual(enabled)
+        +update_thresholds()
+        +switch_to_demo_mode()
+        +connect_to_uart(port, baud)
+    }
+    
+    class PlantApp {
+        -service PlantControllerService
+        -temp_gauge GaugeCard
+        -humidity_gauge GaugeCard
+        -pressure_gauge GaugeCard
+        -soil_card MetricCard
+        -soil_chart TrendChart
+        +connect_uart()
+        +switch_demo()
+        +set_auto()
+        +set_manual()
+        +toggle_pump(enabled)
+        +toggle_led(enabled)
+        +refresh_view()
+    }
+    
+    class Card {
+        &lt;&lt;abstract&gt;&gt;
+        #title str
+        #subtitle str
+    }
+    
+    class MetricCard {
+        -value_label Label
+        -bar Progressbar
+        +update_metric(value, suffix, desc)
+    }
+    
+    class GaugeCard {
+        -canvas Canvas
+        -value float
+        +update_gauge(value, desc)
+    }
+    
+    class TrendChart {
+        -canvas Canvas
+        -line_color str
+        +redraw(history)
+    }
+    
+    class ModeControlCard {
+        -mode_switch StateSwitch
+        -pump_switch StateSwitch
+        -led_switch StateSwitch
+        +update_mode(auto, pump, led)
+    }
+    
+    DeviceConnection <|.. MockDeviceConnection
+    DeviceConnection <|.. UartDeviceConnection
+    UartDeviceConnection o-- MockDeviceConnection
+    PlantControllerService o-- DeviceConnection
+    PlantControllerService o-- SystemStatus
+    PlantControllerService o-- ThresholdConfig
+    PlantControllerService o-- DataLogger
+    PlantControllerService ..> PlantData
+    DataLogger ..> PlantData
+    PlantApp o-- PlantControllerService
+    PlantApp *-- MetricCard
+    PlantApp *-- GaugeCard
+    PlantApp *-- TrendChart
+    PlantApp *-- ModeControlCard
+    Card <|-- MetricCard
+    Card <|-- GaugeCard
+    Card <|-- TrendChart
+    Card <|-- ModeControlCard
+    MockDeviceConnection ..> PlantData
+    UartDeviceConnection ..> PlantData
+        </div>
+
+        <div class="pattern">
+            <h3>🎨 Wzorzec Strategy Pattern</h3>
+            <p><strong>Interfejs:</strong> <code>DeviceConnection</code></p>
+            <p><strong>Implementacje:</strong></p>
+            <ul>
+                <li><strong>MockDeviceConnection:</strong> Symulacja danych dla trybu demo (bez sprzętu)</li>
+                <li><strong>UartDeviceConnection:</strong> Komunikacja UART z prawdziwym Arduino</li>
+            </ul>
+            <p><strong>Zalety:</strong></p>
+            <ul>
+                <li>Łatwe przełączanie między trybem demo a rzeczywistym sprzętem</li>
+                <li>Testowanie GUI bez Arduino</li>
+                <li>Fallback do MockDevice gdy UART się rozłączy</li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <h3>🔄 Przepływ danych</h3>
+            <ol>
+                <li><strong>PlantApp._tick():</strong> Cykl 2s (timer tkinter):
+                    <ul>
+                        <li>Wywołuje <code>service.refresh_data()</code></li>
+                        <li>Service odczytuje dane z <code>device_connection.read_plant_data()</code></li>
+                        <li>Service stosuje automatykę (jeśli włączona)</li>
+                        <li>Service loguje dane przez <code>data_logger.log()</code></li>
+                        <li>Service aktualizuje <code>history</code> (max 40 próbek)</li>
+                    </ul>
+                </li>
+                <li><strong>PlantApp.refresh_view():</strong> Aktualizacja UI:
+                    <ul>
+                        <li>Odświeża 3 zegary BME (temp, humidity, pressure)</li>
+                        <li>Aktualizuje karty metryki (soil, light, water)</li>
+                        <li>Rysuje wykresy trendów (soil, light)</li>
+                        <li>Ustawia stan przełączników (AUTO/RĘKA, pompa, LED)</li>
+                    </ul>
+                </li>
+                <li><strong>Akcje użytkownika:</strong>
+                    <ul>
+                        <li>Przełączniki → <code>service.set_pump_manual()</code>, <code>service.set_led_manual()</code></li>
+                        <li>Konfiguracja progów → <code>service.update_thresholds()</code></li>
+                        <li>Połączenie UART → <code>service.connect_to_uart()</code></li>
+                        <li>Tryb demo → <code>service.switch_to_demo_mode()</code></li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="info">
+            <h3>📊 Komponenty UI</h3>
+            <p><strong>Okrągłe zegary (GaugeCard):</strong></p>
+            <ul>
+                <li>Temperatura: 0-40°C (kolor #f5b041)</li>
+                <li>Wilgotność powietrza: 0-100% (kolor #5dade2)</li>
+                <li>Ciśnienie: 970-1045 hPa (kolor #f39c12)</li>
+            </ul>
+            <p><strong>Karty metryki (MetricCard):</strong></p>
+            <ul>
+                <li>Wilgotność gleby: 0-100% z paskiem postępu</li>
+                <li>Natężenie światła: 0-100% z paskiem postępu</li>
+                <li>Poziom wody: 0-100% z paskiem postępu</li>
+            </ul>
+            <p><strong>Wykresy trendów (TrendChart):</strong></p>
+            <ul>
+                <li>Historia 40 ostatnich pomiarów</li>
+                <li>Gładkie krzywe (smooth=True)</li>
+                <li>Siatka pomocnicza (5 poziomów 0-100%)</li>
+            </ul>
+            <p><strong>Sterowanie (ModeControlCard):</strong></p>
+            <ul>
+                <li>Przełącznik AUTO/RĘKA (zielony/czerwony)</li>
+                <li>Przełącznik pompy ON/OFF (zielony/czerwony)</li>
+                <li>Przełącznik LED ON/OFF (zielony/czerwony)</li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <h3>💾 Logowanie danych (CSV)</h3>
+            <p><strong>Ścieżka:</strong> <code>logs/plant-log.csv</code></p>
+            <p><strong>Nagłówek:</strong></p>
+            <code style="display: block; background: #f5f5f5; padding: 10px; border-radius: 4px; margin: 10px 0;">
+timestamp,soilMoisture,temperature,airHumidity,pressure,lightLevel,waterLevel,pumpOn,ledOn
+            </code>
+            <p><strong>Przykładowy wiersz:</strong></p>
+            <code style="display: block; background: #f5f5f5; padding: 10px; border-radius: 4px; margin: 10px 0;">
+2026-04-12 15:30:45,55.0,22.5,58.3,1013.2,45.2,80.0,false,false
+            </code>
+            <p><strong>Częstotliwość:</strong> Jeden wiersz co 2 sekundy (podczas pracy aplikacji)</p>
+        </div>
+
+        <div class="pattern">
+            <h3>🎯 Automatyka (PlantControllerService)</h3>
+            <p><strong>Algorytm z histerezą:</strong></p>
+            <pre style="background: #f5f5f5; padding: 15px; border-radius: 4px; overflow-x: auto;">
+# Pompa
+if soil_moisture < threshold.min_soil_moisture and water_level > 5.0:
+    pump_on = True
+elif soil_moisture >= threshold.max_soil_moisture:
+    pump_on = False
+
+# LED Grow
+if light_level < threshold.min_light_level:
+    led_on = True
+elif light_level >= threshold.max_light_level:
+    led_on = False
+
+# Zabezpieczenie pompy (nadrzędne)
+if water_level <= 2.0:
+    pump_on = False  # ZAWSZE wyłącza pompę
+            </pre>
+            <p><strong>Domyślne progi:</strong></p>
+            <ul>
+                <li>Wilgotność gleby: 40-60%</li>
+                <li>Natężenie światła: 35-65%</li>
+                <li>Próg wody (bezpieczeństwo): 2%</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

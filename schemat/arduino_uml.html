@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Plant - Arduino UML Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #1a237e;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .mermaid {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+            margin: 20px 0;
+        }
+        .info h3 {
+            margin-top: 0;
+            color: #1976d2;
+        }
+    </style>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#e3f2fd',
+                primaryTextColor: '#1a237e',
+                primaryBorderColor: '#1976d2',
+                lineColor: '#1976d2',
+                secondaryColor: '#fff3e0',
+                tertiaryColor: '#f1f8e9'
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>🌿 Smart Plant System - Arduino (C++)</h1>
+        <div class="subtitle">Diagram Klas UML - Struktura Programu</div>
+        
+        <div class="info">
+            <h3>📋 Opis architektury</h3>
+            <p><strong>Język:</strong> C++ (Arduino)</p>
+            <p><strong>Platforma:</strong> Arduino Nano (ATmega328P @ 16MHz)</p>
+            <p><strong>Architektura:</strong> Proceduralna z funkcjami pomocniczymi</p>
+            <p><strong>Główne komponenty:</strong></p>
+            <ul>
+                <li><strong>ArduinoMain:</strong> Pętla główna (setup + loop)</li>
+                <li><strong>SystemState:</strong> Stan globalny czujników i urządzeń</li>
+                <li><strong>SensorReader:</strong> Odczyt czujników analogowych (A0-A2) i BME280 (I2C)</li>
+                <li><strong>UARTCommunication:</strong> Protokół CSV (9 pól), komendy sterujące</li>
+                <li><strong>TimeManager:</strong> Synchronizacja czasu z GUI</li>
+                <li><strong>ThresholdConfig:</strong> Progi automatyki (min/max dla gleby i światła)</li>
+            </ul>
+        </div>
+
+        <div class="mermaid">
+classDiagram
+    class ArduinoMain {
+        +setup()
+        +loop()
+    }
+    
+    class SystemState {
+        -soilMoisture float
+        -waterLevel float
+        -lightLevel float
+        -temperature float
+        -humidity float
+        -pressure float
+        -pumpOn bool
+        -ledOn bool
+        -autoMode bool
+        -bme280_ok bool
+    }
+    
+    class TimeManager {
+        -startMillis unsigned_long
+        -currentYear unsigned_long
+        -currentMonth unsigned_long
+        -currentDay unsigned_long
+        -currentHour unsigned_long
+        -currentMinute unsigned_long
+        -currentSecond unsigned_long
+        +updateSystemTime()
+    }
+    
+    class ThresholdConfig {
+        -SOIL_MIN float
+        -SOIL_MAX float
+        -LIGHT_MIN float
+        -LIGHT_MAX float
+        +parseThresholds(String)
+    }
+    
+    class SensorReader {
+        +readSensors()
+        +readBME280()
+    }
+    
+    class UARTCommunication {
+        +processCommands()
+        +sendDataToGUI()
+        +parseTimeCommand(String)
+    }
+    
+    class HardwareInterface {
+        +PIN_SOIL A0
+        +PIN_WATER A1
+        +PIN_LIGHT A2
+        +PIN_PUMP D3
+        +PIN_LED D5
+    }
+    
+    class Adafruit_BME280 {
+        +begin(address) bool
+        +readTemperature() float
+        +readHumidity() float
+        +readPressure() float
+        +setSampling()
+    }
+    
+    ArduinoMain --> SystemState
+    ArduinoMain --> TimeManager
+    ArduinoMain --> ThresholdConfig
+    ArduinoMain --> SensorReader
+    ArduinoMain --> UARTCommunication
+    SensorReader --> Adafruit_BME280
+    SensorReader --> HardwareInterface
+    SensorReader --> SystemState
+    UARTCommunication --> SystemState
+    UARTCommunication --> TimeManager
+    UARTCommunication --> ThresholdConfig
+        </div>
+
+        <div class="info">
+            <h3>🔄 Przepływ danych</h3>
+            <ol>
+                <li><strong>setup():</strong> Inicjalizacja pinów, BME280, UART (9600 baud)</li>
+                <li><strong>loop():</strong> Cykl 2s:
+                    <ul>
+                        <li>Odczyt czujników analogowych (soil, water, light)</li>
+                        <li>Odczyt BME280 (temp, humidity, pressure)</li>
+                        <li>Przetwarzanie komend UART (AUTO/MANUAL/PUMP/LED/SET_TIME/SET_THRESHOLDS)</li>
+                        <li>Automatyka z histerezą (jeśli autoMode=true)</li>
+                        <li>Wysyłanie danych CSV przez UART</li>
+                    </ul>
+                </li>
+                <li><strong>Automatyka:</strong>
+                    <ul>
+                        <li>Pompa: włącza się gdy soil < SOIL_MIN i water > 5%, wyłącza się gdy soil >= SOIL_MAX</li>
+                        <li>LED: włącza się gdy light < LIGHT_MIN, wyłącza się gdy light >= LIGHT_MAX</li>
+                        <li>Zabezpieczenie: pompa WYŁĄCZA się gdy water <= 2%</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="info">
+            <h3>📡 Protokół UART</h3>
+            <p><strong>Format CSV (9 pól):</strong></p>
+            <code style="display: block; background: #f5f5f5; padding: 10px; border-radius: 4px; margin: 10px 0;">
+timestamp,soilMoisture,temperature,airHumidity,pressure,lightLevel,waterLevel,pumpOn,ledOn
+            </code>
+            <p><strong>Przykład:</strong></p>
+            <code style="display: block; background: #f5f5f5; padding: 10px; border-radius: 4px; margin: 10px 0;">
+2026-04-12 15:30:45,55.0,22.5,58.3,1013.2,45.2,80.0,false,false
+            </code>
+            <p><strong>Komendy sterujące (od GUI do Arduino):</strong></p>
+            <ul>
+                <li><code>AUTO</code> - włącz tryb automatyczny</li>
+                <li><code>MANUAL</code> - włącz tryb ręczny</li>
+                <li><code>PUMP:ON</code> / <code>PUMP:OFF</code> - sterowanie pompą</li>
+                <li><code>LED:ON</code> / <code>LED:OFF</code> - sterowanie LED</li>
+                <li><code>SET_TIME:2026-04-12 15:30:45</code> - synchronizacja czasu</li>
+                <li><code>SET_THRESHOLDS:40.0,60.0,35.0,65.0</code> - ustawienie progów</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
